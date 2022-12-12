@@ -6,7 +6,7 @@
 
   <groupId>at.ac.ait.lablink.clients</groupId>
   <artifactId>dpbridge</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
   <name>Lablink datapoint bridge</name>
   <description>The datapoint bridge provides the connection between the datapoints (also called services, inputs, outputs etc.) of Lablink clients.</description>
   <url>https://github.com/ait-lablink/lablink-datapoint-bridge</url>
@@ -249,7 +249,7 @@
     <dependency>
       <groupId>at.ac.ait.lablink</groupId>
       <artifactId>core</artifactId>
-      <version>0.0.2</version>
+      <version>0.0.3</version>
     </dependency>
 
     <dependency>

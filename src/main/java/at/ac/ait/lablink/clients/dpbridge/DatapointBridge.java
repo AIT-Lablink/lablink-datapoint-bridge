@@ -158,6 +158,9 @@ public class DatapointBridge {
   /** The bool data point consumers. */
   private Map<String, ConsumerBoolean> boolDataPointConsumers;
 
+  /** The complex data point consumers. */
+  private Map<String, ConsumerComplex> complexDataPointConsumers;
+
   /** The clients uml. */
   private Map<String, String> clientsUml;
 
@@ -279,6 +282,9 @@ public class DatapointBridge {
     // Double
     doubleDataPointConsumers = new HashMap<String, ConsumerDouble>();
 
+    // Double
+    complexDataPointConsumers = new HashMap<String, ConsumerComplex>();
+
     // Master
     allDataPoints = new HashMap<String, DatapointDataTypes>();
 
@@ -341,6 +347,18 @@ public class DatapointBridge {
       });
 
       this.boolDataPointConsumers.forEach((key, val) -> {
+
+        EDataPointConsumerState status = val.getConsumer().getState();
+        String color =
+            status == EDataPointConsumerState.CONNECTED 
+                ? ansiColorize(status.toString(), ANSI_GREEN)
+                : ansiColorize(status.toString(), ANSI_RED);
+
+        LOG.debug("Consumer {} is {}.", key, color);
+
+      });
+
+      this.complexDataPointConsumers.forEach((key, val) -> {
 
         EDataPointConsumerState status = val.getConsumer().getState();
         String color =
@@ -424,6 +442,9 @@ public class DatapointBridge {
 
     LOG.info("Registering boolean consumers...");
     this.registerBooleanConsumers();
+
+    LOG.info("Registering complex consumers...");
+    this.registerComplexConsumers();
   }
 
   private String readConfigItem(JSONObject jsonObj, String key) {
@@ -559,6 +580,12 @@ public class DatapointBridge {
             LOG.debug("BOOL consumer added. id={}, group={}, client={}, name={}, identifier={}",
                 dpid, dpgroup, dpclient, dpname, dpidentifier);
             break;
+          case DATATYPE_COMPLEX:
+            this.complexDataPointConsumers.put(dpid,
+                new ConsumerComplex(dpid, dpgroup, dpclient, dpname, dpidentifier));
+            LOG.debug("COMPLEX consumer added. id={}, group={}, client={}, name={}, identifier={}",
+                dpid, dpgroup, dpclient, dpname, dpidentifier);
+            break;
           default:
             itemAdded = false;
             LOG.warn("Datatype not '{}' supported yet.", dpdtype);
@@ -659,6 +686,16 @@ public class DatapointBridge {
                   + "' already exists, IGNORED.");
             }
             break;
+          case DATATYPE_COMPLEX:
+            if (this.complexDataPointConsumers.get(connfrom).addNotifier(connto,
+                this.complexDataPointConsumers.get(connto))) {
+              LOG.info(
+                  "A unidirectinal bridge is set from '" + connfrom + "' --> '" + connto + "'.");
+            } else {
+              LOG.info("A unidirectinal bridge between '" + connfrom + "' --> '" + connto
+                  + "' already exists, IGNORED.");
+            }
+            break;
           default:
             LOG.warn("Datatype '{}' not supported yet.", conndt);
             break;
@@ -686,6 +723,16 @@ public class DatapointBridge {
    */
   private void registerBooleanConsumers() {
     for (Map.Entry<String, ConsumerBoolean> con : this.boolDataPointConsumers.entrySet()) {
+      con.getValue().register(this.serviceConsumer);
+      LOG.info(con.getKey() + " registered.");
+    }
+  }
+
+  /**
+   * Register complex consumers.
+   */
+  private void registerComplexConsumers() {
+    for (Map.Entry<String, ConsumerComplex> con : this.complexDataPointConsumers.entrySet()) {
       con.getValue().register(this.serviceConsumer);
       LOG.info(con.getKey() + " registered.");
     }

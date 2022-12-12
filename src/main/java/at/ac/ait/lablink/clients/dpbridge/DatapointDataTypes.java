@@ -20,7 +20,10 @@ public enum DatapointDataTypes {
   DATATYPE_STRING("string"),
 
   /** The datatype double. */
-  DATATYPE_DOUBLE("double");
+  DATATYPE_DOUBLE("double"),
+
+  /** The datatype complex. */
+  DATATYPE_COMPLEX("complex");
 
   /** The value. */
   private String value;
@@ -60,4 +63,3 @@ public enum DatapointDataTypes {
   }
 
 }
-
