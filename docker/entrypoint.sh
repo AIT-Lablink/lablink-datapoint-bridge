@@ -2,7 +2,8 @@
 set -eu
 
 # Derive URLs at container start so -e LLCONFIG=... takes effect.
-LOGGER_CONFIG="-Dlog4j.configurationFile=${LLCONFIG}ait.all.log4j2"
+LOGGER_ID=${LOGGER_ID:-ait.all.log4j2}
+LOGGER_CONFIG="-Dlog4j.configurationFile=${LLCONFIG}${LOGGER_ID}"
 CONFIG_FILE_URI="${LLCONFIG}${DPB_CONFIG}"
 
 # IPv4 configuration.
