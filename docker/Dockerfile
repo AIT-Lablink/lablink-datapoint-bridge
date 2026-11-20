@@ -24,7 +24,7 @@ ENV LLCONFIG=http://lablink-config:10101/get?id=
 ENV DPB_CONFIG=lablink-dpbridge.config
 
 # Path to Java JAR file of data point bridge.
-ENV DPB_JAR_FILE=/app/lib/dpbridge-0.0.3-jar-with-dependencies.jar
+ENV DPB_JAR_FILE=/app/lib/dpbridge-0.0.4-jar-with-dependencies.jar
 
 # Specify the maximum size (in bytes) of the memory allocation pool.
 ENV MEMORY_FLAG=-Xmx512m

@@ -13,7 +13,7 @@
     <dependency>
       <groupId>at.ac.ait.lablink.clients</groupId>
       <artifactId>dpbridge</artifactId>
-      <version>0.0.3</version>
+      <version>0.0.4</version>
       <classifier>jar-with-dependencies</classifier>
       <scope>provided</scope>
     </dependency>
