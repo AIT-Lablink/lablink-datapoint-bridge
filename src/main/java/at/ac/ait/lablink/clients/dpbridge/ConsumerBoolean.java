@@ -42,8 +42,18 @@ public class ConsumerBoolean {
    */
   private void notifyUpdate(boolean newvalue) {
     for (Map.Entry<String, ConsumerBoolean> con : notifiers.entrySet()) {
-      con.getValue().updateValue(newvalue);
-      LOG.info(con.getKey() + " is notified about the changes in " + this.name + ".");
+      ConsumerBoolean destination = con.getValue();
+      if (destination.getConsumer().getState() != EDataPointConsumerState.CONNECTED) {
+        LOG.debug(con.getKey() + " is not connected; skip notification from " + this.name + ".");
+        continue;
+      }
+      try {
+        destination.updateValue(newvalue);
+        LOG.info(con.getKey() + " is notified about the changes in " + this.name + ".");
+      } catch (RuntimeException ex) {
+        LOG.warn("Failed to notify " + con.getKey() + " about changes in " + this.name + ": "
+            + ex.getMessage());
+      }
     }
   }
 

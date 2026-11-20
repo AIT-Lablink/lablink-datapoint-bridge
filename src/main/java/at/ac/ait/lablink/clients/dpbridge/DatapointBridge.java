@@ -491,7 +491,7 @@ public class DatapointBridge {
 
         try {
           python.execfile(this.configUrl.openStream());
-          python.exec("config = DBPLablinkConfiguration()");
+          python.exec("config = DPBLablinkConfiguration()");
           python.exec("cfg = config.getJSONConfig()");
           config = python.get("cfg");
         } catch (Exception ex) {

@@ -44,8 +44,18 @@ public class ConsumerComplex {
   private void notifyUpdate(Complex newvalue) {
     LOG.debug("Initiating to notify other " + notifiers.size() + " for change in " + this.name);
     for (Map.Entry<String, ConsumerComplex> con : notifiers.entrySet()) {
-      con.getValue().updateValue(newvalue);
-      LOG.info(con.getKey() + " is notified about the changes in " + this.name + ".");
+      ConsumerComplex destination = con.getValue();
+      if (destination.getConsumer().getState() != EDataPointConsumerState.CONNECTED) {
+        LOG.debug(con.getKey() + " is not connected; skip notification from " + this.name + ".");
+        continue;
+      }
+      try {
+        destination.updateValue(newvalue);
+        LOG.info(con.getKey() + " is notified about the changes in " + this.name + ".");
+      } catch (RuntimeException ex) {
+        LOG.warn("Failed to notify " + con.getKey() + " about changes in " + this.name + ": "
+            + ex.getMessage());
+      }
     }
   }
 
