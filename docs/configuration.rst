@@ -45,7 +45,10 @@ Connections
 
 ``From`` and ``To`` must both be present in ``DataPoints``.
 Their ``DPDataType`` values must be equal.
-When the source receives a new value, the bridge writes that value to the destination.
+When the source receives a new value, the bridge writes that value to each destination on its own.
+A destination that is not connected, or a write that fails, is logged and skipped.
+The other destinations of that source still receive the value.
+The next source update is written to a destination once that destination is connected.
 
 Environment variables
 =====================
@@ -111,10 +114,10 @@ The bridge loads the script and then runs these two statements:
 
 .. code-block:: python
 
-   config = DBPLablinkConfiguration()
+   config = DPBLablinkConfiguration()
    cfg = config.getJSONConfig()
 
-The class must be named ``DBPLablinkConfiguration``.
+The class must be named ``DPBLablinkConfiguration``.
 The source looks up that name exactly.
 ``getJSONConfig`` is called with no arguments and must return a string.
 That string is parsed with the JSON rules above, including ``%NAME%`` replacement.
@@ -125,7 +128,7 @@ A script can assemble the datapoint list in a loop and return the same document 
 
 .. code-block:: python
 
-   class DBPLablinkConfiguration:
+   class DPBLablinkConfiguration:
        def getJSONConfig(self):
            ends = [("src", "SourceClient"), ("dst", "SinkClient")]
            points = []

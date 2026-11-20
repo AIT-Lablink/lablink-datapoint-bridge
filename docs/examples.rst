@@ -54,7 +54,7 @@ On Linux:
 Python scripting
 ================
 
-Save the ``DBPLablinkConfiguration`` script from :doc:`configuration` as ``bridge.py``.
+Save the ``DPBLablinkConfiguration`` script from :doc:`configuration` as ``bridge.py``.
 Run it with ``-t python``.
 The URL must return the script text.
 

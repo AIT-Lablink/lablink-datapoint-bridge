@@ -69,3 +69,4 @@ Version history
 :0.0.1: initial release
 :0.0.2: deployment to Maven Central and dependency updates
 :0.0.3: support for the ``complex`` datatype
+:0.0.4: a disconnected destination no longer blocks the other destinations of the same source, and the Python configuration class is named ``DPBLablinkConfiguration``
